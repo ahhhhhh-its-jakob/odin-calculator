@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+}
+
+.calculator{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+}
+
+.display{
+    text-align: end;
+    color:aliceblue;
+    background-color: black;
+    padding: 16px 12px;
+}
+
+.button-container{
+    display: flex;
+}
+
+.numbers{
+    flex-grow: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.operators{
+    flex-grow: 2;
+}
+
+.number{
+    width: 33.33%;
+}
+
+.operator{
+    width: 100%;
+}
