@@ -19,4 +19,6 @@ function divide(numerator, denominator){
     return numerator / denominator;
 }
 
+function operate(num1, num2, operator){
 
+}
