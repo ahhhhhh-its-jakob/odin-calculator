@@ -1,7 +1,7 @@
 let firstNumber = '';
 let secondNumber = '';
 let operator = '';
-let runningTotal = 0;
+let runningTotal = '';
 const operators = ['+','-','*','/','='];
 
 const display = document.querySelector('.display');
@@ -27,8 +27,14 @@ function divide(numerator, denominator){
 function handleClick(event){
     let input = event.target.innerText;
     let isOperator = operators.includes(input);
+    console.log(firstNumber, secondNumber, operator);
+    
+    if(!isOperator && runningTotal != ''){
+        runningTotal = '';
+        firstNumber = '';
+    }
 
-    if(!isOperator && operator == ''){
+    if(!isOperator && secondNumber == ''){
         firstNumber += input;
         changeDisplay(firstNumber);
     }
@@ -39,17 +45,37 @@ function handleClick(event){
     }
 
     if(isOperator){
-        if(operator == ''){
-            operator = input;
-            changeDisplay(secondNumber);
+        if(operator != '' && input != '='){           
+            if(secondNumber != ''){
+                console.log(firstNumber, secondNumber, operator);
+                operator = input;
+                operate(firstNumber, secondNumber, operator);
+            }
+
+            if(secondNumber === ''){
+                operator = input;
+                changeDisplay('');
+            }
+        } 
+
+
+        if(operator === ''){
+            if(input === '='){
+                console.log('something')
+                return;
+            } else {
+                operator = input;
+                changeDisplay(secondNumber);
+            }
         }
 
-        if(input == '='){
-            console.log(firstNumber, secondNumber, operator)
+        if(input === '='){
+            console.log(firstNumber, secondNumber, operator);
+            operate(firstNumber, secondNumber, operator);
         }
     }
 
-    if(input == 'Clear'){
+    if(input === 'Clear'){
         clear();
     }
 }
@@ -67,30 +93,41 @@ function changeDisplay(value){
 }
 
 function operate(num1, num2, operator){
-    console.log(num1, num2, operator);
-    let total;
 
     switch(operator){
         case '+': 
-            total = add(num1, num2);
+            runningTotal = add(num1, num2);
+            changeDisplay(runningTotal);
+            firstNumber = runningTotal;
+            secondNumber = '';
+            operator = '';
             break;
         case '-':
-            total = subtract(num1, num2);
+            firstNumber = subtract(num1, num2);
+            changeDisplay(runningTotal);
+            firstNumber = runningTotal;
+            secondNumber = '';
             break;
         case '*':
-            total = multiply(num1, num2);
+            runningTotal = multiply(num1, num2);
+            changeDisplay(runningTotal);
+            firstNumber = runningTotal;
+            secondNumber = '';
             break;
         case '/':
-            total = divide(num1, num2);
+            runningTotal = divide(num1, num2);
+            changeDisplay(runningTotal);
+            firstNumber = runningTotal;
+            secondNumber = '';
         default:
             break;
     }
 }
 
 function clear(){
-    changeDisplay('clear');
-    firstNumber = 0;
-    secondNumber = 0;
+    changeDisplay('');
+    firstNumber = '';
+    secondNumber = '';
     operator = '';
-    runningTotal = 0;
+    runningTotal = '';
 }
