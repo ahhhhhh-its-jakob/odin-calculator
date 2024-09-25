@@ -2,39 +2,28 @@ let firstNumber = '';
 let secondNumber = '';
 let operator = '';
 let runningTotal = '';
+let prevInput = '';
 const operators = ['+','-','*','/','='];
 
 const display = document.querySelector('.display');
 const calculator = document.querySelector('.button-container');
 calculator.addEventListener("click", handleClick);
 
-function add(num1, num2){
-    return Number(num1) + Number(num2);
-}
-
-function subtract(num1, num2){
-    return Number(num1) - Number(num2);
-}
-
-function multiply(num1, num2){
-    return Number(num1) * Number(num2);
-}
-
-function divide(numerator, denominator){
-    return Number(numerator) / Number(denominator);
-}
-
 function handleClick(event){
     let input = event.target.innerText;
     let isOperator = operators.includes(input);
     console.log(firstNumber, secondNumber, operator);
-    
-    if(!isOperator && runningTotal != ''){
-        runningTotal = '';
-        firstNumber = '';
+
+    if(prevInput == '=' && !isOperator){ 
+        clear();
     }
 
-    if(!isOperator && secondNumber == ''){
+    if(input === 'Clear'){
+        clear();
+        return;
+    }
+
+    if(!isOperator && operator === ''){
         firstNumber += input;
         changeDisplay(firstNumber);
     }
@@ -45,19 +34,18 @@ function handleClick(event){
     }
 
     if(isOperator){
-        if(operator != '' && input != '='){           
-            if(secondNumber != ''){
-                console.log(firstNumber, secondNumber, operator);
-                operator = input;
-                operate(firstNumber, secondNumber, operator);
-            }
-
+        if(operator != '' && input != '='){       
             if(secondNumber === ''){
                 operator = input;
                 changeDisplay('');
             }
-        } 
 
+            if(secondNumber != ''){
+                console.log(firstNumber, secondNumber, operator);
+                operate(firstNumber, secondNumber, operator);
+                operator = input;
+            }
+        } 
 
         if(operator === ''){
             if(input === '='){
@@ -75,9 +63,7 @@ function handleClick(event){
         }
     }
 
-    if(input === 'Clear'){
-        clear();
-    }
+    prevInput = input;
 }
 
 function changeDisplay(value){
@@ -103,25 +89,44 @@ function operate(num1, num2, operator){
             operator = '';
             break;
         case '-':
-            firstNumber = subtract(num1, num2);
+            runningTotal = subtract(num1, num2);
             changeDisplay(runningTotal);
             firstNumber = runningTotal;
             secondNumber = '';
+            operator = '';
             break;
         case '*':
             runningTotal = multiply(num1, num2);
             changeDisplay(runningTotal);
             firstNumber = runningTotal;
             secondNumber = '';
+            operator = '';
             break;
         case '/':
             runningTotal = divide(num1, num2);
             changeDisplay(runningTotal);
             firstNumber = runningTotal;
             secondNumber = '';
+            operator = '';
         default:
             break;
     }
+}
+
+function add(num1, num2){
+    return Number(num1) + Number(num2);
+}
+
+function subtract(num1, num2){
+    return Number(num1) - Number(num2);
+}
+
+function multiply(num1, num2){
+    return Number(num1) * Number(num2);
+}
+
+function divide(numerator, denominator){
+    return Number(numerator) / Number(denominator);
 }
 
 function clear(){
