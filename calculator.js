@@ -12,10 +12,23 @@ calculator.addEventListener("click", handleClick);
 function handleClick(event){
     let input = event.target.innerText;
     let isOperator = operators.includes(input);
-    console.log(firstNumber, secondNumber, operator);
 
     if(prevInput == '=' && !isOperator){ 
         clear();
+    }
+
+    if(input === 'Back'){
+        if(operator === ''){
+            firstNumber = firstNumber.slice(0, firstNumber.length - 1);
+            changeDisplay(firstNumber);
+            return;
+        }
+
+        if(operator != ''){
+            secondNumber = secondNumber.slice(0, secondNumber.length - 1);
+            changeDisplay(secondNumber);
+            return;
+        }
     }
 
     if(input === 'Clear'){
@@ -24,12 +37,20 @@ function handleClick(event){
     }
 
     if(!isOperator && operator === ''){
-        firstNumber += input;
+        if(firstNumber.includes('.') && input === '.'){
+            return;
+        } else {
+            firstNumber += input;
+        }
         changeDisplay(firstNumber);
     }
 
     if(!isOperator && operator != ''){
-        secondNumber += input;
+        if(secondNumber.includes('.') && input === '.'){
+            return;
+        } else {
+            secondNumber += input;
+        }
         changeDisplay(secondNumber);
     }
 
@@ -41,7 +62,6 @@ function handleClick(event){
             }
 
             if(secondNumber != ''){
-                console.log(firstNumber, secondNumber, operator);
                 operate(firstNumber, secondNumber, operator);
                 operator = input;
             }
@@ -58,12 +78,12 @@ function handleClick(event){
         }
 
         if(input === '='){
-            console.log(firstNumber, secondNumber, operator);
             operate(firstNumber, secondNumber, operator);
         }
     }
 
     prevInput = input;
+    console.log(firstNumber, secondNumber, operator);
 }
 
 function changeDisplay(value){
