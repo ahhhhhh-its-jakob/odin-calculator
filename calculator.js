@@ -69,7 +69,6 @@ function handleClick(event){
 
         if(operator === ''){
             if(input === '='){
-                console.log('something')
                 return;
             } else {
                 operator = input;
@@ -83,7 +82,6 @@ function handleClick(event){
     }
 
     prevInput = input;
-    console.log(firstNumber, secondNumber, operator);
 }
 
 function changeDisplay(value){
@@ -95,6 +93,11 @@ function changeDisplay(value){
 
     if(value === ''){
         display.innerText = 0;
+    }
+
+    if(value === 'divide by zero'){
+        clear();
+        display.innerText = "woah, you can't do that";
     }
 }
 
@@ -123,6 +126,10 @@ function operate(num1, num2, operator){
             operator = '';
             break;
         case '/':
+            if(secondNumber == 0){
+                changeDisplay('divide by zero');
+                break;
+            }
             runningTotal = divide(num1, num2);
             changeDisplay(runningTotal);
             firstNumber = runningTotal;
